@@ -51,7 +51,7 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 
 - ✅ GitHub-Remote: github.com/Tiemo-LL/seebuchung (public), CI grün *(2026-06-11)*
 - ✅ Docker via OrbStack installiert, wp-env läuft *(2026-06-11)*
-- ⬜ Altsystem hatte `befugnisse`-Tabelle (Berechtigungscode je See × Wochentag × Stunde, char(2)) — Zweck/Bedarf im Neusystem unklar; in Spec §7 beim Import erwähnt, aber nicht im Datenmodell-Task. Tiemo: Brauchen wir Befugnisse noch?
+- 🔄 `befugnisse`-Tabelle entschlüsselt (2026-06-11): regelt je See × Wochentag × Stunde, WER buchen darf (Verbandscodes: 00=offen, 99=nur VDST, 09=nur LVST …). Live-Daten: Jägerweiher durchgehend nur VDST; Marxweiher bis 9 Uhr nur LVST, danach offen; Schlicht offen. Aktive Fachlogik (canDive() in der Buchungsvalidierung)! **Frage an Leo gestellt** (Mail-Entwurf 2026-06-11): Regeln noch aktuell? Vereinfachtes Modell ok (offen / nur VDST / nur eigener Verband)? Wer pflegt das fachlich? → Datenmodell ggf. um Zugangsregel-Spalte(n) an `seebuchung_kontingente` erweitern
 
 - ✅ Plugin-Name/Slug final: **Seebuchung** / `seebuchung` (entschieden 2026-06-10; generisch, kein Verbandsbezug im Namen)
 - ⬜ PayPal-Webhook auf IONOS Shared Hosting verifizieren (Erreichbarkeit/SSL)
