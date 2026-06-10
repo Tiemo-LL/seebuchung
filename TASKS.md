@@ -4,10 +4,10 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 
 ## Phase 0 · Setup
 
-- ⬜ Repo initialisieren: Plugin-Skelett (`seebuchung.php`, Verzeichnisstruktur lt. CLAUDE.md), `.gitignore`, GPLv2+-Lizenz, readme.txt (WP-Format)
-- ⬜ Composer: Autoload (PSR-4), phpcs + WPCS, PHPUnit
-- ⬜ wp-env-Setup (PHP 8.1, aktuelles WP), CI-Grundlage (phpcs + Tests bei Push)
-- ⬜ `docs/`: feature-spec.md + analyse-altsystem.md aus dem Vault hineinkopieren
+- ✅ Repo initialisieren: Plugin-Skelett (`seebuchung.php`, Verzeichnisstruktur lt. CLAUDE.md), `.gitignore`, GPLv2+-Lizenz, readme.txt (WP-Format) *(2026-06-10)*
+- ✅ Composer: Autoload (PSR-4), phpcs + WPCS, PHPUnit — lokal validiert: phpcs grün, 4 Tests grün *(2026-06-10)*
+- 🔄 wp-env-Setup (PHP 8.1, aktuelles WP), CI-Grundlage (phpcs + Tests bei Push) — `.wp-env.json` + GitHub-Actions-Workflow angelegt; **wp-env noch nicht gestartet: Docker fehlt lokal** (Docker Desktop o. ä. installieren, dann `npx @wordpress/env start`); CI läuft erst nach Push zu GitHub
+- ✅ `docs/`: feature-spec.md + analyse-altsystem.md aus dem Vault hineinkopiert *(2026-06-10)*
 
 ## Phase 1 · Kern (Parität Altsystem)
 
@@ -48,6 +48,9 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 - ⬜ Go-Live zum Saisonstart 2027, Altsystem read-only abschalten
 
 ## Offene Fragen
+
+- ⬜ GitHub-Remote anlegen (Org/Repo-Name?) und pushen — erst dann läuft die CI
+- ⬜ Docker (für wp-env) lokal installieren — Tiemo
 
 - ✅ Plugin-Name/Slug final: **Seebuchung** / `seebuchung` (entschieden 2026-06-10; generisch, kein Verbandsbezug im Namen)
 - ⬜ PayPal-Webhook auf IONOS Shared Hosting verifizieren (Erreichbarkeit/SSL)
