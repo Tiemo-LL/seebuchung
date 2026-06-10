@@ -1,0 +1,21 @@
+# Abhängigkeiten
+/vendor/
+/node_modules/
+
+# Zugangsdaten — niemals ins Repo (PayPal live, DB)
+.env
+.env.*
+
+# Tool-Caches
+.phpunit.result.cache
+.phpcs-cache
+*.log
+
+# Build-Artefakte
+/build/
+/dist/
+
+# macOS / Editoren
+.DS_Store
+.idea/
+.vscode/
