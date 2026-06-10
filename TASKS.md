@@ -14,7 +14,7 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 - ✅ Datenmodell + Migrationen: `seebuchung_seen`, `seebuchung_kontingente` (See × Wochentag × Stunde als Zeilen), `seebuchung_buchungen`, `seebuchung_blockaden`, `seebuchung_vereine`, `seebuchung_brevets`, `seebuchung_nachttermine`, Settings via Options-API — dbDelta-Migration mit Versionsflag, in wp-env verifiziert (7 Tabellen, idempotent) *(2026-06-11)*
 - ⬜ Import-Skript Stammdaten aus Alt-Dump (`alt/.../backup/*.sql.gz`): Seen, Kontingente, Vereine, Brevets, Kontakte
 - ⬜ Admin: Seen-CRUD + Kontingent-Matrix + Saison-/Fenster-Einstellungen
-- ⬜ Verfügbarkeits-Engine: Restkontingent je See/Datum/Stunde (berücksichtigt Buchungen, Blockaden, Nachttermine, Saison, Buchungsfenster) — **mit Unit-Tests**
+- ✅ Verfügbarkeits-Engine: Restkontingent je See/Datum/Stunde (berücksichtigt Buchungen, Blockaden, Nachttermine, Saison, Buchungsfenster) — **mit Unit-Tests** — pure Domänenklasse + Repository, 19 Engine-Tests, End-to-End in wp-env verifiziert *(2026-06-11)*
 - ⬜ Buchungs-Frontend (Shortcode/Block): Kalender → ggf. Stundenwahl → Formular → Zusammenfassung; mobile-first
 - ⬜ Buchungs-Statemachine + Doppel-Opt-in-Mail (gehashter Token), Storno-Link, Verfall per Cron — **mit Tests**
 - ⬜ Admin: Buchungsübersicht (filterbar je See/Datum), manuelle Stornierung
