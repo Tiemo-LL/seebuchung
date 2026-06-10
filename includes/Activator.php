@@ -16,6 +16,8 @@ final class Activator {
 	 * Aktivierungs-Hook.
 	 */
 	public static function activate(): void {
-		// Phase 1: Tabellen via dbDelta anlegen, Rollen registrieren, Schema-Version setzen.
+		Database\Schema::install();
+
+		// Phase 1: Rollen/Capabilities registrieren.
 	}
 }

@@ -41,6 +41,8 @@ final class Plugin {
 	public function init(): void {
 		load_plugin_textdomain( 'seebuchung', false, dirname( plugin_basename( SEEBUCHUNG_PLUGIN_FILE ) ) . '/languages' );
 
-		// Phase 1: Datenmodell, Shortcode [seebuchung], Admin-Seiten, Rollen.
+		Database\Schema::maybe_upgrade();
+
+		// Phase 1: Shortcode [seebuchung], Admin-Seiten, Rollen.
 	}
 }

@@ -6,12 +6,12 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 
 - ✅ Repo initialisieren: Plugin-Skelett (`seebuchung.php`, Verzeichnisstruktur lt. CLAUDE.md), `.gitignore`, GPLv2+-Lizenz, readme.txt (WP-Format) *(2026-06-10)*
 - ✅ Composer: Autoload (PSR-4), phpcs + WPCS, PHPUnit — lokal validiert: phpcs grün, 4 Tests grün *(2026-06-10)*
-- 🔄 wp-env-Setup (PHP 8.1, aktuelles WP), CI-Grundlage (phpcs + Tests bei Push) — `.wp-env.json` + GitHub-Actions-Workflow angelegt; **wp-env noch nicht gestartet: Docker fehlt lokal** (Docker Desktop o. ä. installieren, dann `npx @wordpress/env start`); CI läuft erst nach Push zu GitHub
+- ✅ wp-env-Setup (PHP 8.1, aktuelles WP), CI-Grundlage (phpcs + Tests bei Push) — wp-env läuft via OrbStack (Plugin aktiv in WP 7.0), CI grün auf github.com/Tiemo-LL/seebuchung *(2026-06-11)*
 - ✅ `docs/`: feature-spec.md + analyse-altsystem.md aus dem Vault hineinkopiert *(2026-06-10)*
 
 ## Phase 1 · Kern (Parität Altsystem)
 
-- ⬜ Datenmodell + Migrationen: `seebuchung_seen`, `seebuchung_kontingente` (See × Wochentag × Stunde als Zeilen), `seebuchung_buchungen`, `seebuchung_blockaden`, `seebuchung_vereine`, `seebuchung_brevets`, `seebuchung_nachttermine`, Settings via Options-API
+- ✅ Datenmodell + Migrationen: `seebuchung_seen`, `seebuchung_kontingente` (See × Wochentag × Stunde als Zeilen), `seebuchung_buchungen`, `seebuchung_blockaden`, `seebuchung_vereine`, `seebuchung_brevets`, `seebuchung_nachttermine`, Settings via Options-API — dbDelta-Migration mit Versionsflag, in wp-env verifiziert (7 Tabellen, idempotent) *(2026-06-11)*
 - ⬜ Import-Skript Stammdaten aus Alt-Dump (`alt/.../backup/*.sql.gz`): Seen, Kontingente, Vereine, Brevets, Kontakte
 - ⬜ Admin: Seen-CRUD + Kontingent-Matrix + Saison-/Fenster-Einstellungen
 - ⬜ Verfügbarkeits-Engine: Restkontingent je See/Datum/Stunde (berücksichtigt Buchungen, Blockaden, Nachttermine, Saison, Buchungsfenster) — **mit Unit-Tests**
@@ -49,8 +49,9 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 
 ## Offene Fragen
 
-- ⬜ GitHub-Remote anlegen (Org/Repo-Name?) und pushen — erst dann läuft die CI
-- ⬜ Docker (für wp-env) lokal installieren — Tiemo
+- ✅ GitHub-Remote: github.com/Tiemo-LL/seebuchung (public), CI grün *(2026-06-11)*
+- ✅ Docker via OrbStack installiert, wp-env läuft *(2026-06-11)*
+- ⬜ Altsystem hatte `befugnisse`-Tabelle (Berechtigungscode je See × Wochentag × Stunde, char(2)) — Zweck/Bedarf im Neusystem unklar; in Spec §7 beim Import erwähnt, aber nicht im Datenmodell-Task. Tiemo: Brauchen wir Befugnisse noch?
 
 - ✅ Plugin-Name/Slug final: **Seebuchung** / `seebuchung` (entschieden 2026-06-10; generisch, kein Verbandsbezug im Namen)
 - ⬜ PayPal-Webhook auf IONOS Shared Hosting verifizieren (Erreichbarkeit/SSL)
