@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ruleset name="Seebuchung">
+	<description>WordPress Coding Standards für das Seebuchung-Plugin.</description>
+
+	<file>.</file>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg value="ps"/>
+	<arg name="parallel" value="8"/>
+
+	<config name="minimum_wp_version" value="6.4"/>
+
+	<rule ref="WordPress">
+		<!-- PSR-4-Klassendateien (includes/Plugin.php statt class-plugin.php). -->
+		<exclude name="WordPress.Files.FileName"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="seebuchung"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="seebuchung"/>
+				<element value="Seebuchung"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Tests: PHPUnit-Konventionen statt WP-Dateinamen/Doku-Pflichten. -->
+	<rule ref="Squiz.Commenting.FileComment">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting.ClassComment">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting.VariableComment">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+	<!-- Tests laufen ohne WordPress — file_get_contents etc. sind dort ok. -->
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+</ruleset>
