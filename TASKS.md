@@ -12,7 +12,7 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 ## Phase 1 · Kern (Parität Altsystem)
 
 - ✅ Datenmodell + Migrationen: `seebuchung_seen`, `seebuchung_kontingente` (See × Wochentag × Stunde als Zeilen), `seebuchung_buchungen`, `seebuchung_blockaden`, `seebuchung_vereine`, `seebuchung_brevets`, `seebuchung_nachttermine`, Settings via Options-API — dbDelta-Migration mit Versionsflag, in wp-env verifiziert (7 Tabellen, idempotent) *(2026-06-11)*
-- ⬜ Import-Skript Stammdaten aus Alt-Dump (`alt/.../backup/*.sql.gz`): Seen, Kontingente, Vereine, Brevets, Kontakte
+- ✅ Import-Skript Stammdaten aus Alt-Dump (`alt/.../backup/*.sql.gz`): Seen, Kontingente, Vereine, Brevets — WP-CLI `wp seebuchung import-alt <datei>`, nur in leere Tabellen; mit echtem Dump verifiziert (3 Seen, 161 Kontingente, 47 Vereine, 14 Brevets; Engine-Werte = Altsystem). „Kein Verein"-Platzhalter wird übersprungen (→ verein_id NULL). **Kontakte folgen mit dem Rollen-Task** (werden WP-User) *(2026-06-11)*
 - ⬜ Admin: Seen-CRUD + Kontingent-Matrix + Saison-/Fenster-Einstellungen
 - ✅ Verfügbarkeits-Engine: Restkontingent je See/Datum/Stunde (berücksichtigt Buchungen, Blockaden, Nachttermine, Saison, Buchungsfenster) — **mit Unit-Tests** — pure Domänenklasse + Repository, 19 Engine-Tests, End-to-End in wp-env verifiziert *(2026-06-11)*
 - ⬜ Buchungs-Frontend (Shortcode/Block): Kalender → ggf. Stundenwahl → Formular → Zusammenfassung; mobile-first

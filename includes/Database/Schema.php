@@ -24,8 +24,10 @@ final class Schema {
 
 	/**
 	 * Bei jeder Schemaänderung erhöhen — löst beim Plugin-Update die Migration aus.
+	 *
+	 * Version 2: vereine.stadt ergänzt (Übernahme aus Altsystem).
 	 */
-	public const DB_VERSION = '1';
+	public const DB_VERSION = '2';
 
 	/**
 	 * Option mit der installierten Schemaversion.
@@ -171,6 +173,7 @@ final class Schema {
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			nummer varchar(20) NOT NULL,
 			name varchar(190) NOT NULL,
+			stadt varchar(100) NOT NULL DEFAULT '',
 			verband varchar(190) NOT NULL DEFAULT '',
 			aktiv tinyint(1) NOT NULL DEFAULT 1,
 			token_hash char(64) DEFAULT NULL,
