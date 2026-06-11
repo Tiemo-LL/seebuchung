@@ -17,7 +17,6 @@ final class Activator {
 	 */
 	public static function activate(): void {
 		Database\Schema::install();
-
-		// Phase 1: Rollen/Capabilities registrieren.
+		Rollen::registrieren();
 	}
 }
