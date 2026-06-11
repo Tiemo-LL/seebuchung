@@ -22,5 +22,8 @@ final class Activator {
 		if ( false === wp_next_scheduled( 'seebuchung_verfall' ) ) {
 			wp_schedule_event( time(), 'hourly', 'seebuchung_verfall' );
 		}
+		if ( false === wp_next_scheduled( 'seebuchung_taeglich' ) ) {
+			wp_schedule_event( strtotime( 'tomorrow 06:00' ), 'daily', 'seebuchung_taeglich' );
+		}
 	}
 }

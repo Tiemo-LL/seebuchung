@@ -211,6 +211,28 @@ final class Buchungsservice {
 	}
 
 	/**
+	 * Buchung als kontrolliert markieren (Kontrolleurs-Ansicht).
+	 *
+	 * @param int $id Buchungs-ID.
+	 * @return array<string, mixed>|WP_Error Aktualisierte Buchung oder Fehler.
+	 */
+	public function kontrollieren( int $id ) {
+		$buchung = $this->buchungen->per_id( $id );
+		if ( null === $buchung ) {
+			return new WP_Error( 'seebuchung_id', __( 'Buchung nicht gefunden.', 'seebuchung' ) );
+		}
+
+		if ( ! Buchungsstatemachine::erlaubt( (string) $buchung['status'], Buchungsstatus::KONTROLLIERT ) ) {
+			return new WP_Error( 'seebuchung_status', __( 'Nur gültige Buchungen können kontrolliert werden.', 'seebuchung' ) );
+		}
+
+		$this->buchungen->status_setzen( $id, Buchungsstatus::KONTROLLIERT, array( 'kontrolliert_am' => current_time( 'mysql' ) ) );
+		$buchung['status'] = Buchungsstatus::KONTROLLIERT;
+
+		return $buchung;
+	}
+
+	/**
 	 * Buchung durch den Admin stornieren (Buchungsübersicht).
 	 *
 	 * @param int $id Buchungs-ID.

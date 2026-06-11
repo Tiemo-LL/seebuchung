@@ -49,6 +49,13 @@ final class Plugin {
 				( new Service\Buchungsservice() )->verfall_bereinigen();
 			}
 		);
+		add_action(
+			'seebuchung_taeglich',
+			static function () {
+				( new Service\Wochenbericht() )->vielleicht_senden();
+			}
+		);
+		Service\Wochenbericht::profilfelder_registrieren();
 
 		Frontend\Shortcode::registrieren();
 		Frontend\FormHandler::registrieren();

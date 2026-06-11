@@ -19,5 +19,6 @@ final class Deactivator {
 	 */
 	public static function deactivate(): void {
 		wp_clear_scheduled_hook( 'seebuchung_verfall' );
+		wp_clear_scheduled_hook( 'seebuchung_taeglich' );
 	}
 }

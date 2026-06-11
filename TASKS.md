@@ -34,8 +34,8 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 - ✅ Vereins-Token: Generierung/Widerruf im Admin (Seite „Vereine", Klartext-Link einmalig sichtbar, nur Hash gespeichert), Token-Link-Seite `?sb_verein=…` *(2026-06-11)*
 - ✅ Antragsformular (nur im Fenster, konfigurierbar; Zieljahr-Logik über Jahreswechsel): Regeln max. 2/Jahr/See/Verein, max. 3 Std., Tagessee = ganzer Tag — **mit Tests** (11 Validierungs-Tests) *(2026-06-11)*
 - ✅ Genehmigungs-Workflow: Admin-Seite „Blockaden" mit Genehmigen/Ablehnen + Mail an Verein; genehmigte Blockade wirkt in der Engine (E2E verifiziert: 12 reservierte Taucher sperren Slot) *(2026-06-11)*
-- ⬜ Kontrolleurs-Ansicht (mobile): Login → See → Tagesliste (gecacht), QR-Scan → gültig/ungültig, "kontrolliert"-Haken
-- ⬜ Wochenbericht: Cron-Mail mit PDF-Buchungsliste je See an Seeverantwortliche
+- ✅ Kontrolleurs-Ansicht (Admin-Seite „Kontrolle", Cap kontrollieren): See → Tagesliste, QR-Payload-Prüfung (Eingabefeld für Scanner-Apps) → GÜLTIG/UNGÜLTIG, „kontrolliert"-Haken (nur aus gültig). Kamera-Scan direkt im Browser + Offline-Cache → Politur Phase 4 *(2026-06-11)*
+- ✅ Wochenbericht: täglicher Cron, Versand am konfigurierten Wochentag (Default Freitag) je See an zugeordnete Seeverantwortliche (Zuordnung im WP-Benutzerprofil); HTML-Tabellen-Mail der kommenden 7 Tage. **PDF-Anhang → Phase 4 Politur** *(2026-06-11)*
 
 ## Phase 4 · Jahresarchiv, Politur, Go-Live
 

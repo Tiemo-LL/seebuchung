@@ -38,6 +38,7 @@ final class Settings {
 			'anonymisierung_tage'        => 28,
 			'antragsfenster_von'         => '10-01',
 			'antragsfenster_bis'         => '02-01',
+			'wochenbericht_wochentag'    => 5,
 			'paypal_sandbox'             => true,
 			'paypal_client_id'           => '',
 			'paypal_secret'              => '',

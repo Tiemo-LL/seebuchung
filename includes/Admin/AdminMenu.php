@@ -64,6 +64,14 @@ final class AdminMenu {
 				);
 				add_submenu_page(
 					'seebuchung',
+					__( 'Kontrolle', 'seebuchung' ),
+					__( 'Kontrolle', 'seebuchung' ),
+					Rollen::CAP_KONTROLLE,
+					'seebuchung-kontrolle',
+					array( new KontrolleSeite(), 'render' )
+				);
+				add_submenu_page(
+					'seebuchung',
 					__( 'Einstellungen', 'seebuchung' ),
 					__( 'Einstellungen', 'seebuchung' ),
 					Rollen::CAP_VERWALTEN,
@@ -77,6 +85,7 @@ final class AdminMenu {
 		SeenSeite::aktionen_registrieren();
 		BlockadenSeite::aktionen_registrieren();
 		VereineSeite::aktionen_registrieren();
+		KontrolleSeite::aktionen_registrieren();
 		EinstellungenSeite::aktionen_registrieren();
 	}
 }
