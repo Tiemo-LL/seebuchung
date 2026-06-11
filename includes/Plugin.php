@@ -53,6 +53,9 @@ final class Plugin {
 			'seebuchung_taeglich',
 			static function () {
 				( new Service\Wochenbericht() )->vielleicht_senden();
+				( new Database\BuchungsRepository() )->anonymisieren(
+					Domain\Anonymisierung::stichtag( current_time( 'Y-m-d' ), (int) Settings::get( 'anonymisierung_tage' ) )
+				);
 			}
 		);
 		Service\Wochenbericht::profilfelder_registrieren();

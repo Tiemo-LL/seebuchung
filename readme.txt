@@ -4,7 +4,7 @@ Tags: buchung, tauchen, kontingent, verein, paypal
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 0.1.0
+Stable tag: 0.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,13 @@ Alle verbandsspezifischen Inhalte (Name, Logo, Seen, Gebühren, Mailtexte) werde
 3. Unter "Seebuchung" Seen, Kontingente und Verbandsdaten konfigurieren.
 
 == Changelog ==
+
+= 0.9.0 =
+* Komplette Buchungsstrecke: Kalender, Stundenwahl, Doppel-Opt-in, Storno, Verfall
+* PayPal Orders v2 mit Webhook, QR-Tauchbestätigung, CSV-Export
+* Blockaden-Self-Service für Vereine mit Genehmigungs-Workflow
+* Kontrolleurs-Ansicht, Wochenberichte, Saisonwechsel mit DSGVO-Anonymisierung, Mehrjahres-Statistik
+* Stammdaten-Import aus dem LVST-Altsystem (WP-CLI)
 
 = 0.1.0 =
 * Projekt-Setup (Phase 0): Plugin-Skelett, Composer, phpcs/WPCS, PHPUnit, wp-env, CI.

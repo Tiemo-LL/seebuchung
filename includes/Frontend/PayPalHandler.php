@@ -51,6 +51,7 @@ final class PayPalHandler {
 	 */
 	public function start(): void {
 		check_admin_referer( 'seebuchung_paypal_start' );
+		RateLimiter::pruefen_oder_abbrechen( 'paypal' );
 
 		$token   = isset( $_POST['token'] ) ? sanitize_text_field( wp_unslash( $_POST['token'] ) ) : '';
 		$service = new Buchungsservice();

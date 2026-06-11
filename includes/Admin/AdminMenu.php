@@ -72,6 +72,22 @@ final class AdminMenu {
 				);
 				add_submenu_page(
 					'seebuchung',
+					__( 'Statistik', 'seebuchung' ),
+					__( 'Statistik', 'seebuchung' ),
+					Rollen::CAP_EINSEHEN,
+					'seebuchung-statistik',
+					array( new StatistikSeite(), 'render' )
+				);
+				add_submenu_page(
+					'seebuchung',
+					__( 'Saisonwechsel', 'seebuchung' ),
+					__( 'Saisonwechsel', 'seebuchung' ),
+					Rollen::CAP_VERWALTEN,
+					'seebuchung-saisonwechsel',
+					array( new SaisonwechselSeite(), 'render' )
+				);
+				add_submenu_page(
+					'seebuchung',
 					__( 'Einstellungen', 'seebuchung' ),
 					__( 'Einstellungen', 'seebuchung' ),
 					Rollen::CAP_VERWALTEN,
@@ -86,6 +102,7 @@ final class AdminMenu {
 		BlockadenSeite::aktionen_registrieren();
 		VereineSeite::aktionen_registrieren();
 		KontrolleSeite::aktionen_registrieren();
+		SaisonwechselSeite::aktionen_registrieren();
 		EinstellungenSeite::aktionen_registrieren();
 	}
 }

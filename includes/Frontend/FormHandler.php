@@ -34,6 +34,7 @@ final class FormHandler {
 	 */
 	public function buchen(): void {
 		check_admin_referer( 'seebuchung_buchen' );
+		RateLimiter::pruefen_oder_abbrechen( 'buchen' );
 
 		$zurueck = $this->zurueck_url();
 
@@ -81,6 +82,7 @@ final class FormHandler {
 	 */
 	public function blockade_antrag(): void {
 		check_admin_referer( 'seebuchung_blockade_antrag' );
+		RateLimiter::pruefen_oder_abbrechen( 'blockade' );
 
 		$token   = isset( $_POST['vereins_token'] ) ? sanitize_text_field( wp_unslash( $_POST['vereins_token'] ) ) : '';
 		$zurueck = add_query_arg( 'sb_verein', rawurlencode( $token ), $this->zurueck_url() );
@@ -129,6 +131,7 @@ final class FormHandler {
 	 */
 	public function token_aktion(): void {
 		check_admin_referer( 'seebuchung_token_aktion' );
+		RateLimiter::pruefen_oder_abbrechen( 'token_aktion' );
 
 		$token   = isset( $_POST['token'] ) ? sanitize_text_field( wp_unslash( $_POST['token'] ) ) : '';
 		$aktion  = isset( $_POST['aktion'] ) ? sanitize_key( wp_unslash( $_POST['aktion'] ) ) : '';

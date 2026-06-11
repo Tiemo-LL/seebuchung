@@ -39,11 +39,11 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 
 ## Phase 4 · Jahresarchiv, Politur, Go-Live
 
-- ⬜ Saisonwechsel-Assistent: neues Jahr anlegen, altes read-only; Anonymisierung (28 Tage nach Tauchtag / Saisonende) per Cron — **mit Tests**
-- ⬜ Mehrjahres-Statistik (Auslastung je See/Tag/Stunde, Einnahmen, aggregiert)
-- ⬜ F7-Härtung: alle LVST-Spezifika in Settings (Verbandsname, Logo, Texte, Gebühren), Installations-/Konfig-Doku für fremde Admins
-- ⬜ Barrierefreiheit + Lasttest Buchungs-Frontend (Saisonstart-Peak)
-- ⬜ Security-Review (Nonces, Escaping, SQL, Rate-Limits) — als eigener Review-Durchgang
+- ✅ Saisonwechsel-Assistent: neue Saisondaten je See (Vorschlag +1 Jahr), Anonymisierung vergangener Buchungen; täglicher Cron anonymisiert nach Frist (28 Tage) — **mit Tests**, E2E verifiziert (PII weg, Statistikfelder bleiben) *(2026-06-11)*
+- ✅ Mehrjahres-Statistik: Jahr × See (Buchungen, Taucher, Einnahmen, Stornos, Verfall) + Top-Stunden — übersteht Anonymisierung *(2026-06-11)*
+- ✅ F7-Härtung: alle Verbands-Spezifika in Settings, Mailtexte/Templates filterbar, README + docs/installation.md für fremde Admins. Hinweis Verteilung: `composer install --no-dev` nötig (vendor/ nicht im Repo) *(2026-06-11)*
+- 🔄 Barrierefreiheit + Lasttest: Grundlagen drin (Labels, role-Attribute, mobile-first, Touch-Ziele); systematischer A11y-Durchgang + Lasttest auf Zielumgebung offen
+- ⬜ Security-Review (Nonces, Escaping, SQL, Rate-Limits) — als eigener Review-Durchgang. Stand: WPCS-Security-Sniffs 0 Befunde, Nonces/Caps/prepare/Token-Hashing/Rate-Limit (10/10 min je IP) implementiert; unabhängiger Durchgang (z. B. /security-review) vor Go-Live empfohlen
 - ⬜ Migration auf lvst.de: Plugin installieren, Stammdaten-Import, Testlauf mit einem See (Schlicht), see.lvst.de-Redirect, Info-Seiten als WP-Seiten
 - ⬜ Go-Live zum Saisonstart 2027, Altsystem read-only abschalten
 

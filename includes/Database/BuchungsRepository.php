@@ -139,6 +139,35 @@ final class BuchungsRepository {
 	}
 
 	/**
+	 * Personenbezogene Daten alter Buchungen entfernen (DSGVO).
+	 *
+	 * Statistikfelder (See, Datum, Stunde, Anzahl, Status, Preis) bleiben
+	 * erhalten; der token_hash wird entwertet (deterministisch eindeutig,
+	 * da UNIQUE und NOT NULL).
+	 *
+	 * @param string $stichtag Buchungen mit Tauchtag vor diesem Datum (Y-m-d) werden anonymisiert.
+	 * @return int Anzahl anonymisierter Buchungen.
+	 */
+	public function anonymisieren( string $stichtag ): int {
+		global $wpdb;
+		$tabelle = Schema::table( 'buchungen' );
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Eigene Tabelle.
+		return (int) $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$tabelle}
+				SET name = '', vorname = '', email = '', telefon = '',
+					token_hash = SHA2(CONCAT('anonymisiert-', id), 256),
+					anonymisiert_am = %s, updated_at = %s
+				WHERE datum < %s AND anonymisiert_am IS NULL",
+				current_time( 'mysql' ),
+				current_time( 'mysql' ),
+				$stichtag
+			)
+		);
+		// phpcs:enable
+	}
+
+	/**
 	 * Unbestätigte Anfragen vor dem Stichtag auf "verfallen" setzen.
 	 *
 	 * @param string $stichtag MySQL-Datetime; ältere angefragte Buchungen verfallen.
