@@ -56,8 +56,14 @@ final class Shortcode {
 		$monat  = isset( $_GET['sb_monat'] ) ? sanitize_text_field( wp_unslash( $_GET['sb_monat'] ) ) : '';
 		// phpcs:enable
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Lesende Navigation.
+		$vereins_token = isset( $_GET['sb_verein'] ) ? sanitize_text_field( wp_unslash( $_GET['sb_verein'] ) ) : '';
+
 		$hinweis = $this->hinweis_html();
 
+		if ( '' !== $vereins_token ) {
+			return $hinweis . $this->blockade_antrag( $vereins_token );
+		}
 		if ( '' !== $token ) {
 			return $hinweis . $this->token_seite( $token );
 		}
@@ -197,6 +203,44 @@ final class Shortcode {
 	}
 
 	/**
+	 * Blockade-Antragsseite für Vereine (F2, über Token-Link).
+	 *
+	 * @param string $vereins_token Klartext-Token aus dem Vereinslink.
+	 */
+	private function blockade_antrag( string $vereins_token ): string {
+		$service = new \Seebuchung\Service\Blockadenservice();
+		$verein  = $service->verein_zum_token( $vereins_token );
+		if ( null === $verein ) {
+			return $this->template( 'hinweis', array( 'text' => __( 'Dieser Vereinslink ist ungültig oder wurde widerrufen.', 'seebuchung' ) ) );
+		}
+
+		if ( ! $service->fenster_offen() ) {
+			return $this->template(
+				'hinweis',
+				array(
+					'text' => sprintf(
+						/* translators: 1: Fensterbeginn, 2: Fensterende */
+						__( 'Blockade-Anträge sind nur im Antragsfenster möglich (%1$s bis %2$s).', 'seebuchung' ),
+						(string) \Seebuchung\Settings::get( 'antragsfenster_von' ),
+						(string) \Seebuchung\Settings::get( 'antragsfenster_bis' )
+					),
+				)
+			);
+		}
+
+		return $this->template(
+			'blockade-antrag',
+			array(
+				'verein'    => $verein,
+				'seen'      => ( new SeenRepository() )->aktive(),
+				'token'     => $vereins_token,
+				'zieljahr'  => \Seebuchung\Domain\Blockadenvalidierung::zieljahr( current_time( 'Y-m-d' ), (string) \Seebuchung\Settings::get( 'antragsfenster_von' ) ),
+				'basis_url' => $this->basis_url(),
+			)
+		);
+	}
+
+	/**
 	 * Hinweis-Block nach Redirects (PRG).
 	 */
 	private function hinweis_html(): string {
@@ -209,11 +253,12 @@ final class Shortcode {
 		}
 
 		$texte = array(
-			'angefragt'     => __( 'Deine Anfrage ist eingegangen! Bitte bestätige sie über den Link, den wir dir per E-Mail geschickt haben.', 'seebuchung' ),
-			'bestaetigt'    => __( 'Deine Buchung ist bestätigt.', 'seebuchung' ),
-			'gueltig'       => __( 'Deine Buchung ist bestätigt und gültig. Gut Luft!', 'seebuchung' ),
-			'storniert'     => __( 'Deine Buchung wurde storniert.', 'seebuchung' ),
-			'paypal_fehler' => __( 'Die PayPal-Zahlung konnte nicht abgeschlossen werden. Bitte versuche es erneut.', 'seebuchung' ),
+			'angefragt'          => __( 'Deine Anfrage ist eingegangen! Bitte bestätige sie über den Link, den wir dir per E-Mail geschickt haben.', 'seebuchung' ),
+			'bestaetigt'         => __( 'Deine Buchung ist bestätigt.', 'seebuchung' ),
+			'gueltig'            => __( 'Deine Buchung ist bestätigt und gültig. Gut Luft!', 'seebuchung' ),
+			'storniert'          => __( 'Deine Buchung wurde storniert.', 'seebuchung' ),
+			'paypal_fehler'      => __( 'Die PayPal-Zahlung konnte nicht abgeschlossen werden. Bitte versuche es erneut.', 'seebuchung' ),
+			'blockade_beantragt' => __( 'Euer Blockade-Antrag ist eingegangen. Ihr bekommt eine Mail, sobald er entschieden ist.', 'seebuchung' ),
 		);
 
 		if ( 'fehler' === $ergebnis ) {

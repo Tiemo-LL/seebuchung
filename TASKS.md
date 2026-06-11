@@ -31,9 +31,9 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 
 ## Phase 3 · Blockaden-Self-Service + Kontrolle
 
-- ⬜ Vereins-Token: Generierung/Widerruf im Admin, Token-Link-Seite
-- ⬜ Antragsformular (nur im Fenster 1.10.–1.2., konfigurierbar): Regeln max. 2/Jahr/See/Verein, max. 3 Std. automatisch prüfen — **mit Tests**
-- ⬜ Genehmigungs-Workflow: beantragt → genehmigt/abgelehnt + Mail an Verein; genehmigte Blockade in Verfügbarkeits-Engine
+- ✅ Vereins-Token: Generierung/Widerruf im Admin (Seite „Vereine", Klartext-Link einmalig sichtbar, nur Hash gespeichert), Token-Link-Seite `?sb_verein=…` *(2026-06-11)*
+- ✅ Antragsformular (nur im Fenster, konfigurierbar; Zieljahr-Logik über Jahreswechsel): Regeln max. 2/Jahr/See/Verein, max. 3 Std., Tagessee = ganzer Tag — **mit Tests** (11 Validierungs-Tests) *(2026-06-11)*
+- ✅ Genehmigungs-Workflow: Admin-Seite „Blockaden" mit Genehmigen/Ablehnen + Mail an Verein; genehmigte Blockade wirkt in der Engine (E2E verifiziert: 12 reservierte Taucher sperren Slot) *(2026-06-11)*
 - ⬜ Kontrolleurs-Ansicht (mobile): Login → See → Tagesliste (gecacht), QR-Scan → gültig/ungültig, "kontrolliert"-Haken
 - ⬜ Wochenbericht: Cron-Mail mit PDF-Buchungsliste je See an Seeverantwortliche
 

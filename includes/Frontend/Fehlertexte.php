@@ -34,6 +34,11 @@ final class Fehlertexte {
 			Buchungsvalidierung::FEHLER_ALLE_ZAHLER      => __( 'An diesem See sind alle Taucher zahlungspflichtig.', 'seebuchung' ),
 			'email'                                      => __( 'Bitte gib eine gültige E-Mail-Adresse an.', 'seebuchung' ),
 			'see'                                        => __( 'Dieser See existiert nicht.', 'seebuchung' ),
+			\Seebuchung\Domain\Blockadenvalidierung::FEHLER_FENSTER_ZU => __( 'Das Antragsfenster ist derzeit geschlossen.', 'seebuchung' ),
+			\Seebuchung\Domain\Blockadenvalidierung::FEHLER_FALSCHES_JAHR => __( 'Anträge sind nur für die kommende Saison möglich.', 'seebuchung' ),
+			\Seebuchung\Domain\Blockadenvalidierung::FEHLER_MAX_PRO_JAHR => __( 'Euer Verein hat an diesem See bereits zwei Blockaden im Jahr.', 'seebuchung' ),
+			\Seebuchung\Domain\Blockadenvalidierung::FEHLER_ZU_LANG => __( 'Eine Stundenblockade darf höchstens drei Stunden umfassen.', 'seebuchung' ),
+			\Seebuchung\Domain\Blockadenvalidierung::FEHLER_ZEITRAUM => __( 'Bitte gib einen gültigen Zeitraum an (oder wähle "ganzer Tag").', 'seebuchung' ),
 		);
 
 		$ergebnis = array();

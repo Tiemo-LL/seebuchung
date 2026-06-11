@@ -48,6 +48,22 @@ final class AdminMenu {
 				);
 				add_submenu_page(
 					'seebuchung',
+					__( 'Blockaden', 'seebuchung' ),
+					__( 'Blockaden', 'seebuchung' ),
+					Rollen::CAP_VERWALTEN,
+					'seebuchung-blockaden',
+					array( new BlockadenSeite(), 'render' )
+				);
+				add_submenu_page(
+					'seebuchung',
+					__( 'Vereine', 'seebuchung' ),
+					__( 'Vereine', 'seebuchung' ),
+					Rollen::CAP_VERWALTEN,
+					'seebuchung-vereine',
+					array( new VereineSeite(), 'render' )
+				);
+				add_submenu_page(
+					'seebuchung',
 					__( 'Einstellungen', 'seebuchung' ),
 					__( 'Einstellungen', 'seebuchung' ),
 					Rollen::CAP_VERWALTEN,
@@ -59,6 +75,8 @@ final class AdminMenu {
 
 		BuchungenSeite::aktionen_registrieren();
 		SeenSeite::aktionen_registrieren();
+		BlockadenSeite::aktionen_registrieren();
+		VereineSeite::aktionen_registrieren();
 		EinstellungenSeite::aktionen_registrieren();
 	}
 }
