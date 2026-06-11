@@ -51,7 +51,7 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 
 - ✅ GitHub-Remote: github.com/Tiemo-LL/seebuchung (public), CI grün *(2026-06-11)*
 - ✅ Docker via OrbStack installiert, wp-env läuft *(2026-06-11)*
-- 🔄 Zugangsregeln (alt: `befugnisse`-Tabelle): regelt je See × Wochentag × Stunde, WER buchen darf (00=offen, 99=nur VDST, 09=nur LVST …). Live-Daten: Jägerweiher durchgehend nur VDST; Marxweiher bis 9 Uhr nur LVST, danach offen; Schlicht offen. Aktive Fachlogik (canDive() in der Buchungsvalidierung). **Vorläufige Entscheidung Tiemo (2026-06-11): wird im Neusystem erstmal NICHT abgebildet** — Mail an Leo (vize@lvst.de) raus, finale Entscheidung nach seiner Antwort. Falls doch nötig: als Zugangsregel-Spalte an `seebuchung_kontingente` + Filter in der Verfügbarkeits-Engine nachrüstbar
+- ✅ Zugangsregeln (alt: `befugnisse`-Tabelle, Jägerweiher nur VDST / Marxweiher vormittags nur LVST): **entfällt endgültig — Leo (2026-06-11): „Wird nicht gebraucht!"** Nicht ins Neusystem übernommen. Konsequenz: an allen Seen können künftig auch Gäste ohne Verein buchen (gegen Gebühr). Falls je wieder nötig: Zugangsregel-Spalte an `seebuchung_kontingente` + Engine-Filter nachrüstbar
 
 - ✅ Plugin-Name/Slug final: **Seebuchung** / `seebuchung` (entschieden 2026-06-10; generisch, kein Verbandsbezug im Namen)
 - ⬜ PayPal-Webhook auf IONOS Shared Hosting verifizieren (Erreichbarkeit/SSL)
