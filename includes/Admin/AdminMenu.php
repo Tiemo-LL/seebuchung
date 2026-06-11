@@ -94,6 +94,14 @@ final class AdminMenu {
 					'seebuchung-einstellungen',
 					array( new EinstellungenSeite(), 'render' )
 				);
+				add_submenu_page(
+					'seebuchung',
+					__( 'Import', 'seebuchung' ),
+					__( 'Import', 'seebuchung' ),
+					Rollen::CAP_VERWALTEN,
+					'seebuchung-import',
+					array( new ImportSeite(), 'render' )
+				);
 			}
 		);
 
@@ -104,5 +112,6 @@ final class AdminMenu {
 		KontrolleSeite::aktionen_registrieren();
 		SaisonwechselSeite::aktionen_registrieren();
 		EinstellungenSeite::aktionen_registrieren();
+		ImportSeite::aktionen_registrieren();
 	}
 }
