@@ -18,6 +18,6 @@ final class Deactivator {
 	 * Deaktivierungs-Hook.
 	 */
 	public static function deactivate(): void {
-		// Phase 1: geplante Cron-Events (Verfall, Anonymisierung, Wochenbericht) entfernen.
+		wp_clear_scheduled_hook( 'seebuchung_verfall' );
 	}
 }

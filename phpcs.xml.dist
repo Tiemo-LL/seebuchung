@@ -32,6 +32,8 @@
 				<element value="Seebuchung"/>
 			</property>
 		</properties>
+		<!-- Templates laufen in Methoden-Scope (include im Template-Loader), nicht global. -->
+		<exclude-pattern>*/templates/*</exclude-pattern>
 	</rule>
 
 	<!-- Tests: PHPUnit-Konventionen statt WP-Dateinamen/Doku-Pflichten. -->

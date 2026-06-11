@@ -43,10 +43,20 @@ final class Plugin {
 
 		Database\Schema::maybe_upgrade();
 
+		add_action(
+			'seebuchung_verfall',
+			static function () {
+				( new Service\Buchungsservice() )->verfall_bereinigen();
+			}
+		);
+
+		Frontend\Shortcode::registrieren();
+		Frontend\FormHandler::registrieren();
+
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\WP_CLI::add_command( 'seebuchung import-alt', Cli\ImportAltCommand::class );
 		}
 
-		// Phase 1: Shortcode [seebuchung], Admin-Seiten, Rollen.
+		// Phase 1: Admin-Seiten (Seen-CRUD, Buchungsübersicht).
 	}
 }

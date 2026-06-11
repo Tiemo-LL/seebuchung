@@ -15,10 +15,10 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 - ✅ Import-Skript Stammdaten aus Alt-Dump (`alt/.../backup/*.sql.gz`): Seen, Kontingente, Vereine, Brevets — WP-CLI `wp seebuchung import-alt <datei>`, nur in leere Tabellen; mit echtem Dump verifiziert (3 Seen, 161 Kontingente, 47 Vereine, 14 Brevets; Engine-Werte = Altsystem). „Kein Verein"-Platzhalter wird übersprungen (→ verein_id NULL). **Kontakte folgen mit dem Rollen-Task** (werden WP-User) *(2026-06-11)*
 - ⬜ Admin: Seen-CRUD + Kontingent-Matrix + Saison-/Fenster-Einstellungen
 - ✅ Verfügbarkeits-Engine: Restkontingent je See/Datum/Stunde (berücksichtigt Buchungen, Blockaden, Nachttermine, Saison, Buchungsfenster) — **mit Unit-Tests** — pure Domänenklasse + Repository, 19 Engine-Tests, End-to-End in wp-env verifiziert *(2026-06-11)*
-- ⬜ Buchungs-Frontend (Shortcode/Block): Kalender → ggf. Stundenwahl → Formular → Zusammenfassung; mobile-first
-- ⬜ Buchungs-Statemachine + Doppel-Opt-in-Mail (gehashter Token), Storno-Link, Verfall per Cron — **mit Tests**
+- ✅ Buchungs-Frontend (Shortcode `[seebuchung]`): Seeauswahl → Kalender → Stundenwahl → Formular → Token-Statusseite; mobile-first, serverseitig gerendert, PRG über admin-post; Templates per Filter überschreibbar (F7). Gutenberg-Block folgt in der Politur *(2026-06-11)*
+- ✅ Buchungs-Statemachine + Doppel-Opt-in-Mail (gehashter Token), Storno-Link, Verfall per Cron — **mit Tests** — E2E in wp-env: anfragen → Mail-Token → bestätigen (kostenlos→gültig, zahlungspflichtig→wartet auf PayPal/Phase 2) → stornieren (Kontingent frei) → Verfall-Cron. **Wichtige Korrektur:** Alt-Semantik `isKostenpflichtig` = „ALLE Taucher zahlen", Zahler zahlen immer 4,50 € (unabhängig vom Flag) *(2026-06-11)*
 - ⬜ Admin: Buchungsübersicht (filterbar je See/Datum), manuelle Stornierung
-- ⬜ Rollen/Capabilities anlegen (`seebuchung_admin`, `seebuchung_seeverantwortlicher`, `seebuchung_kontrolleur`)
+- ✅ Rollen/Capabilities (`seebuchung_admin`, `seebuchung_seeverantwortlicher`, `seebuchung_kontrolleur`) + Caps, WP-Admins erhalten alle; uninstall.php *(2026-06-11)*
 
 ## Phase 2 · Zahlung + Bestätigung
 

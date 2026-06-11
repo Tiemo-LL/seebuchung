@@ -34,16 +34,12 @@ final class VerfuegbarkeitsRepository {
 
 		$heute = $heute ?? current_time( 'Y-m-d' );
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Eigene Plugin-Tabellen; Tabellennamen aus Schema::table(), Platzhalterzahl der IN-Liste ist dynamisch.
-		$seen_tabelle = Schema::table( 'seen' );
-		$see_row      = $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM {$seen_tabelle} WHERE id = %d", $see_id ),
-			ARRAY_A
-		);
-		if ( null === $see_row ) {
+		$see = $this->see_laden( $see_id );
+		if ( null === $see ) {
 			return null;
 		}
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Eigene Plugin-Tabellen; Tabellennamen aus Schema::table(), Platzhalterzahl der IN-Liste ist dynamisch.
 		$kontingente_tabelle = Schema::table( 'kontingente' );
 		$kontingente         = $wpdb->get_results(
 			$wpdb->prepare(
@@ -91,13 +87,26 @@ final class VerfuegbarkeitsRepository {
 		// phpcs:enable
 
 		return new VerfuegbarkeitsEngine(
-			See::from_row( $see_row ),
+			$see,
 			self::kontingente_normalisieren( $kontingente ),
 			self::belegungen_normalisieren( $belegung_rows ),
 			self::blockaden_normalisieren( $blockade_rows ),
 			self::nachttermine_normalisieren( $nachttermin_rows ),
 			$heute
 		);
+	}
+
+	/**
+	 * See als Domänenobjekt laden.
+	 *
+	 * @param int $see_id See-ID.
+	 */
+	public function see_laden( int $see_id ): ?See {
+		global $wpdb;
+		$tabelle = Schema::table( 'seen' );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Eigene Tabelle.
+		$zeile = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$tabelle} WHERE id = %d", $see_id ), ARRAY_A );
+		return null === $zeile ? null : See::from_row( $zeile );
 	}
 
 	/**

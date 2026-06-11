@@ -32,7 +32,7 @@ final class See {
 	 * @param int|null    $stunde_bis_wochenende  Ende der Buchbarkeit Sa/So (exklusiv).
 	 * @param int         $min_anmelder           Mindestanzahl Taucher je Buchung.
 	 * @param int         $max_pro_buchung        Maximale Taucher je Buchung.
-	 * @param bool        $kostenpflichtig        Ob Nicht-Verbandstaucher zahlen.
+	 * @param bool        $kostenpflichtig        Ob ALLE Taucher zahlungspflichtig sind (nicht nur Gäste ohne Verein).
 	 * @param float       $preis_pro_person       Preis je zahlungspflichtiger Person.
 	 */
 	public function __construct(

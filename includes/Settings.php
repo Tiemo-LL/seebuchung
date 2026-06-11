@@ -33,6 +33,7 @@ final class Settings {
 			'verband_kurzname'           => '',
 			'kontakt_email'              => '',
 			'logo_attachment_id'         => 0,
+			'buchungsseite_id'           => 0,
 			'bestaetigungsfrist_stunden' => 48,
 			'anonymisierung_tage'        => 28,
 			'antragsfenster_von'         => '10-01',
