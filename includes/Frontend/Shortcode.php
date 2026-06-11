@@ -191,6 +191,7 @@ final class Shortcode {
 				'see'       => $see,
 				'token'     => $token,
 				'basis_url' => $this->basis_url(),
+				'qr_svg'    => ( new \Seebuchung\Service\QrService() )->svg_fuer_buchung( $buchung ),
 			)
 		);
 	}
@@ -208,10 +209,11 @@ final class Shortcode {
 		}
 
 		$texte = array(
-			'angefragt'  => __( 'Deine Anfrage ist eingegangen! Bitte bestätige sie über den Link, den wir dir per E-Mail geschickt haben.', 'seebuchung' ),
-			'bestaetigt' => __( 'Deine Buchung ist bestätigt.', 'seebuchung' ),
-			'gueltig'    => __( 'Deine Buchung ist bestätigt und gültig. Gut Luft!', 'seebuchung' ),
-			'storniert'  => __( 'Deine Buchung wurde storniert.', 'seebuchung' ),
+			'angefragt'     => __( 'Deine Anfrage ist eingegangen! Bitte bestätige sie über den Link, den wir dir per E-Mail geschickt haben.', 'seebuchung' ),
+			'bestaetigt'    => __( 'Deine Buchung ist bestätigt.', 'seebuchung' ),
+			'gueltig'       => __( 'Deine Buchung ist bestätigt und gültig. Gut Luft!', 'seebuchung' ),
+			'storniert'     => __( 'Deine Buchung wurde storniert.', 'seebuchung' ),
+			'paypal_fehler' => __( 'Die PayPal-Zahlung konnte nicht abgeschlossen werden. Bitte versuche es erneut.', 'seebuchung' ),
 		);
 
 		if ( 'fehler' === $ergebnis ) {

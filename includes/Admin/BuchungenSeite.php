@@ -24,6 +24,16 @@ final class BuchungenSeite {
 	 */
 	public static function aktionen_registrieren(): void {
 		add_action(
+			'admin_post_seebuchung_csv_export',
+			static function () {
+				if ( ! current_user_can( Rollen::CAP_VERWALTEN ) ) {
+					wp_die( esc_html__( 'Keine Berechtigung.', 'seebuchung' ) );
+				}
+				check_admin_referer( 'seebuchung_csv_export' );
+				self::csv_export();
+			}
+		);
+		add_action(
 			'admin_post_seebuchung_admin_storno',
 			static function () {
 				if ( ! current_user_can( Rollen::CAP_VERWALTEN ) ) {
@@ -45,6 +55,27 @@ final class BuchungenSeite {
 				exit;
 			}
 		);
+	}
+
+	/**
+	 * CSV aller Zahlungen streamen (Schatzmeister-Export).
+	 */
+	private static function csv_export(): void {
+		global $wpdb;
+		$tabelle = \Seebuchung\Database\Schema::table( 'buchungen' );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL -- Eigene Tabelle, keine Parameter.
+		$zeilen = (array) $wpdb->get_results( "SELECT id, datum, stunde, see_id, name, vorname, email, anzahl_taucher, anzahl_zahler, preis_gesamt, paypal_transaktion, status, updated_at FROM {$tabelle} WHERE paypal_transaktion IS NOT NULL ORDER BY updated_at", ARRAY_A );
+
+		header( 'Content-Type: text/csv; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename=seebuchung-zahlungen.csv' );
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- CSV-Stream an den Browser.
+		$ausgabe = fopen( 'php://output', 'w' );
+		fputcsv( $ausgabe, array( 'Buchung', 'Datum', 'Stunde', 'See-ID', 'Name', 'Vorname', 'E-Mail', 'Taucher', 'Zahler', 'Betrag EUR', 'PayPal-Transaktion', 'Status', 'Aktualisiert' ), ';' );
+		foreach ( $zeilen as $zeile ) {
+			fputcsv( $ausgabe, array_values( $zeile ), ';' );
+		}
+		exit;
 	}
 
 	/**
@@ -99,6 +130,14 @@ final class BuchungenSeite {
 				</select>
 				<button class="button"><?php esc_html_e( 'Filtern', 'seebuchung' ); ?></button>
 			</form>
+
+			<?php if ( $darf_storno ) : ?>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top:0.5em">
+					<?php wp_nonce_field( 'seebuchung_csv_export' ); ?>
+					<input type="hidden" name="action" value="seebuchung_csv_export">
+					<button class="button"><?php esc_html_e( 'Zahlungen als CSV exportieren', 'seebuchung' ); ?></button>
+				</form>
+			<?php endif; ?>
 
 			<table class="widefat striped" style="margin-top:1em">
 				<thead>

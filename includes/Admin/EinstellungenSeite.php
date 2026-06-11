@@ -89,6 +89,9 @@ final class EinstellungenSeite {
 						<td><input id="sb-ppid" class="regular-text" name="paypal_client_id" value="<?php echo esc_attr( (string) $werte['paypal_client_id'] ); ?>" autocomplete="off"></td></tr>
 					<tr><th><label for="sb-ppsec"><?php esc_html_e( 'Secret', 'seebuchung' ); ?></label></th>
 						<td><input id="sb-ppsec" type="password" class="regular-text" name="paypal_secret" value="<?php echo esc_attr( (string) $werte['paypal_secret'] ); ?>" autocomplete="new-password"></td></tr>
+					<tr><th><label for="sb-ppwh"><?php esc_html_e( 'Webhook-ID', 'seebuchung' ); ?></label></th>
+						<td><input id="sb-ppwh" class="regular-text" name="paypal_webhook_id" value="<?php echo esc_attr( (string) $werte['paypal_webhook_id'] ); ?>">
+						<p class="description"><?php echo esc_html( sprintf( /* translators: %s: Webhook-URL */ __( 'Im PayPal-Developer-Portal einen Webhook auf %s anlegen (Event: PAYMENT.CAPTURE.COMPLETED) und die ID hier eintragen.', 'seebuchung' ), rest_url( 'seebuchung/v1/paypal-webhook' ) ) ); ?></p></td></tr>
 				</table>
 
 				<p><button class="button button-primary"><?php esc_html_e( 'Speichern', 'seebuchung' ); ?></button></p>
@@ -124,6 +127,7 @@ final class EinstellungenSeite {
 				'paypal_sandbox'             => isset( $_POST['paypal_sandbox'] ),
 				'paypal_client_id'           => $text( 'paypal_client_id' ),
 				'paypal_secret'              => $text( 'paypal_secret' ),
+				'paypal_webhook_id'          => $text( 'paypal_webhook_id' ),
 			)
 		);
 

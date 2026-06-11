@@ -52,6 +52,7 @@ final class Plugin {
 
 		Frontend\Shortcode::registrieren();
 		Frontend\FormHandler::registrieren();
+		Frontend\PayPalHandler::registrieren();
 		Admin\AdminMenu::registrieren();
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {

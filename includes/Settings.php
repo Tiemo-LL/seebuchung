@@ -41,6 +41,7 @@ final class Settings {
 			'paypal_sandbox'             => true,
 			'paypal_client_id'           => '',
 			'paypal_secret'              => '',
+			'paypal_webhook_id'          => '',
 		);
 	}
 

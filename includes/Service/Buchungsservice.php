@@ -180,6 +180,37 @@ final class Buchungsservice {
 	}
 
 	/**
+	 * Buchung nach Zahlungseingang gültig setzen (PayPal-Capture/Webhook).
+	 *
+	 * Idempotent: ist die Buchung schon gültig, passiert nichts.
+	 *
+	 * @param int    $id          Buchungs-ID.
+	 * @param string $transaktion PayPal-Capture-ID.
+	 * @return array<string, mixed>|WP_Error Aktualisierte Buchung oder Fehler.
+	 */
+	public function bezahlt_markieren( int $id, string $transaktion ) {
+		$buchung = $this->buchungen->per_id( $id );
+		if ( null === $buchung ) {
+			return new WP_Error( 'seebuchung_id', __( 'Buchung nicht gefunden.', 'seebuchung' ) );
+		}
+
+		if ( Buchungsstatus::GUELTIG === $buchung['status'] || Buchungsstatus::KONTROLLIERT === $buchung['status'] ) {
+			return $buchung; // Bereits verarbeitet (z. B. Webhook nach Return-Flow).
+		}
+		if ( ! Buchungsstatemachine::erlaubt( (string) $buchung['status'], Buchungsstatus::GUELTIG ) ) {
+			return new WP_Error( 'seebuchung_status', __( 'Diese Buchung kann nicht mehr gültig gesetzt werden.', 'seebuchung' ) );
+		}
+
+		$this->buchungen->status_setzen( $id, Buchungsstatus::GUELTIG, array( 'paypal_transaktion' => $transaktion ) );
+		$buchung['status']             = Buchungsstatus::GUELTIG;
+		$buchung['paypal_transaktion'] = $transaktion;
+
+		$this->mailer->gueltig( $buchung, home_url( '/' ) );
+
+		return $buchung;
+	}
+
+	/**
 	 * Buchung durch den Admin stornieren (Buchungsübersicht).
 	 *
 	 * @param int $id Buchungs-ID.

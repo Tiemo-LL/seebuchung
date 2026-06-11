@@ -22,12 +22,12 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 
 ## Phase 2 · Zahlung + Bestätigung
 
-- ⬜ PayPal Orders v2: Checkout im Flow für zahlungspflichtige Buchungen (Preisberechnung: Zahler × Preis/Person), Sandbox-Modus in Settings
-- ⬜ Webhook-Endpoint mit Signaturprüfung; Buchung → `gültig` erst nach Capture; Transaktions-ID speichern
-- ⬜ Keine-Erstattung-Logik bei Storno bezahlter Buchungen (Kontingent frei, Geld bleibt) + Hinweistexte
-- ⬜ CSV-Export Zahlungen (Schatzmeister)
-- ⬜ QR-Bestätigung: signierter Payload (HMAC), Anzeige auf Bestätigungsseite + in Mail; PDF-Download als Option
-- ⬜ E2E-Test Sandbox: buchen → zahlen → bestätigen → stornieren
+- ✅ PayPal Orders v2: Checkout im Flow (Zahlen-Button auf der Token-Statusseite → Order → Approve → Capture), Preis = Zahler × Preis/Person, Sandbox-Modus in Settings; eigener REST-Client über WP-HTTP-API (kein SDK) *(2026-06-11)*
+- ✅ Webhook-Endpoint `/wp-json/seebuchung/v1/paypal-webhook` mit Signaturprüfung (verify-webhook-signature); `gültig` erst nach Capture, idempotent (Return-Flow + Webhook doppelt sicher); Capture-ID an der Buchung *(2026-06-11)*
+- ✅ Keine-Erstattung-Logik: Storno setzt nur Status (Kontingent frei, Geld bleibt), Hinweistexte in Formular, Storno-Dialog und Mail *(2026-06-11)*
+- ✅ CSV-Export Zahlungen (Schatzmeister) — Button in der Buchungsübersicht *(2026-06-11)*
+- 🔄 QR-Bestätigung: signierter Payload (HMAC, offline prüfbar), QR-SVG auf der Statusseite (ohne gd-Abhängigkeit); Mail **verlinkt** auf die QR-Seite statt einzubetten (Text-Mails). Offen: optionaler PDF-Download (→ Phase 4 Politur) *(2026-06-11)*
+- ⬜ E2E-Test Sandbox: buchen → zahlen → bestätigen → stornieren — **braucht PayPal-Sandbox-Zugangsdaten von Tiemo** (Client-ID/Secret/Webhook-ID in Seebuchung → Einstellungen eintragen); Code-Flow ohne PayPal-Gegenstelle in wp-env verifiziert
 
 ## Phase 3 · Blockaden-Self-Service + Kontrolle
 

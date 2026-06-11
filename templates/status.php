@@ -32,6 +32,16 @@ $kann_stornieren  = Buchungsstatemachine::erlaubt( $buchung_status, Buchungsstat
 <div class="seebuchung">
 	<h2><?php esc_html_e( 'Deine Buchung', 'seebuchung' ); ?></h2>
 
+	<?php if ( isset( $qr_svg ) && null !== $qr_svg ) : ?>
+		<div class="seebuchung-qr">
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG stammt aus dem eigenen QR-Generator, nicht aus Nutzereingaben.
+			echo $qr_svg;
+			?>
+			<p><?php esc_html_e( 'Tauchbestätigung — am See auf dem Handy vorzeigen.', 'seebuchung' ); ?></p>
+		</div>
+	<?php endif; ?>
+
 	<table class="seebuchung-details">
 		<tr><th><?php esc_html_e( 'Status', 'seebuchung' ); ?></th><td><span class="seebuchung-status seebuchung-status--<?php echo esc_attr( $buchung_status ); ?>"><?php echo esc_html( $status_labels[ $buchung_status ] ?? $buchung_status ); ?></span></td></tr>
 		<tr><th><?php esc_html_e( 'See', 'seebuchung' ); ?></th><td><?php echo esc_html( null !== $see ? $see->name : '—' ); ?></td></tr>
@@ -49,6 +59,25 @@ $kann_stornieren  = Buchungsstatemachine::erlaubt( $buchung_status, Buchungsstat
 			<tr><th><?php esc_html_e( 'Gebühr', 'seebuchung' ); ?></th><td><?php echo esc_html( number_format_i18n( (float) $buchung['preis_gesamt'], 2 ) . ' €' ); ?></td></tr>
 		<?php endif; ?>
 	</table>
+
+	<?php if ( Buchungsstatus::BESTAETIGT === $buchung_status && (float) ( $buchung['preis_gesamt'] ?? 0 ) > 0 && \Seebuchung\Service\PayPalClient::konfiguriert() ) : ?>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="seebuchung-aktionen" style="margin-bottom:1rem">
+			<?php wp_nonce_field( 'seebuchung_paypal_start' ); ?>
+			<input type="hidden" name="action" value="seebuchung_paypal_start">
+			<input type="hidden" name="token" value="<?php echo esc_attr( $token ); ?>">
+			<button type="submit" class="seebuchung-button">
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: %s: Betrag */
+						__( 'Jetzt %s € mit PayPal zahlen', 'seebuchung' ),
+						number_format_i18n( (float) $buchung['preis_gesamt'], 2 )
+					)
+				);
+				?>
+			</button>
+		</form>
+	<?php endif; ?>
 
 	<?php if ( $kann_bestaetigen || $kann_stornieren ) : ?>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="seebuchung-aktionen">

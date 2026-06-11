@@ -199,6 +199,21 @@
 }
 
 /* Statusseite */
+.seebuchung-qr {
+	text-align: center;
+	margin-bottom: 1rem;
+}
+
+.seebuchung-qr svg {
+	max-width: 15rem;
+	height: auto;
+}
+
+.seebuchung-qr p {
+	font-size: 0.875rem;
+	opacity: 0.8;
+}
+
 .seebuchung-details {
 	width: 100%;
 	border-collapse: collapse;
