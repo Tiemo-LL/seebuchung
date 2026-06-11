@@ -65,6 +65,58 @@ final class BuchungsRepository {
 	}
 
 	/**
+	 * Buchung per ID.
+	 *
+	 * @param int $id Buchungs-ID.
+	 * @return array<string, mixed>|null
+	 */
+	public function per_id( int $id ): ?array {
+		global $wpdb;
+		$tabelle = Schema::table( 'buchungen' );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Eigene Tabelle.
+		$zeile = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$tabelle} WHERE id = %d", $id ), ARRAY_A );
+		return null === $zeile ? null : $zeile;
+	}
+
+	/**
+	 * Buchungen für die Admin-Übersicht suchen.
+	 *
+	 * @param int    $see_id See-Filter (0 = alle).
+	 * @param string $datum  Datums-Filter (Y-m-d, leer = alle).
+	 * @param string $status Status-Filter (leer = alle).
+	 * @param int    $limit  Max. Zeilen.
+	 * @return array<int, array<string, mixed>>
+	 */
+	public function suchen( int $see_id, string $datum, string $status, int $limit = 200 ): array {
+		global $wpdb;
+		$tabelle = Schema::table( 'buchungen' );
+
+		$bedingungen = array( '1=1' );
+		$parameter   = array();
+		if ( $see_id > 0 ) {
+			$bedingungen[] = 'see_id = %d';
+			$parameter[]   = $see_id;
+		}
+		if ( '' !== $datum ) {
+			$bedingungen[] = 'datum = %s';
+			$parameter[]   = $datum;
+		}
+		if ( '' !== $status ) {
+			$bedingungen[] = 'status = %s';
+			$parameter[]   = $status;
+		}
+		$parameter[] = $limit;
+
+		$where = implode( ' AND ', $bedingungen );
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Eigene Tabelle, dynamische Filter.
+		return (array) $wpdb->get_results(
+			$wpdb->prepare( "SELECT * FROM {$tabelle} WHERE {$where} ORDER BY datum DESC, stunde, id DESC LIMIT %d", $parameter ),
+			ARRAY_A
+		);
+		// phpcs:enable
+	}
+
+	/**
 	 * Hat dieselbe E-Mail an dem Tag/See schon eine aktive Buchung?
 	 *
 	 * @param int    $see_id See-ID.

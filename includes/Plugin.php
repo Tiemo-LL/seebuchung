@@ -52,6 +52,7 @@ final class Plugin {
 
 		Frontend\Shortcode::registrieren();
 		Frontend\FormHandler::registrieren();
+		Admin\AdminMenu::registrieren();
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\WP_CLI::add_command( 'seebuchung import-alt', Cli\ImportAltCommand::class );

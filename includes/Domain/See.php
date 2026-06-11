@@ -34,6 +34,7 @@ final class See {
 	 * @param int         $max_pro_buchung        Maximale Taucher je Buchung.
 	 * @param bool        $kostenpflichtig        Ob ALLE Taucher zahlungspflichtig sind (nicht nur Gäste ohne Verein).
 	 * @param float       $preis_pro_person       Preis je zahlungspflichtiger Person.
+	 * @param string      $info_text              Hinweistext fürs Frontend.
 	 */
 	public function __construct(
 		public readonly int $id,
@@ -50,7 +51,8 @@ final class See {
 		public readonly int $min_anmelder,
 		public readonly int $max_pro_buchung,
 		public readonly bool $kostenpflichtig,
-		public readonly float $preis_pro_person
+		public readonly float $preis_pro_person,
+		public readonly string $info_text = ''
 	) {
 	}
 
@@ -75,7 +77,8 @@ final class See {
 			(int) $row['min_anmelder'],
 			(int) $row['max_pro_buchung'],
 			(bool) $row['kostenpflichtig'],
-			(float) $row['preis_pro_person']
+			(float) $row['preis_pro_person'],
+			(string) ( $row['info_text'] ?? '' )
 		);
 	}
 }

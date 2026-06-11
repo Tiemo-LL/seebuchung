@@ -180,6 +180,30 @@ final class Buchungsservice {
 	}
 
 	/**
+	 * Buchung durch den Admin stornieren (Buchungsübersicht).
+	 *
+	 * @param int $id Buchungs-ID.
+	 * @return array<string, mixed>|WP_Error Aktualisierte Buchung oder Fehler.
+	 */
+	public function stornieren_admin( int $id ) {
+		$buchung = $this->buchungen->per_id( $id );
+		if ( null === $buchung ) {
+			return new WP_Error( 'seebuchung_id', __( 'Buchung nicht gefunden.', 'seebuchung' ) );
+		}
+
+		if ( ! Buchungsstatemachine::erlaubt( (string) $buchung['status'], Buchungsstatus::STORNIERT ) ) {
+			return new WP_Error( 'seebuchung_status', __( 'Diese Buchung kann nicht mehr storniert werden.', 'seebuchung' ) );
+		}
+
+		$this->buchungen->status_setzen( $id, Buchungsstatus::STORNIERT, array( 'storniert_am' => current_time( 'mysql' ) ) );
+		$buchung['status'] = Buchungsstatus::STORNIERT;
+
+		$this->mailer->storniert( $buchung );
+
+		return $buchung;
+	}
+
+	/**
 	 * Buchung zum Token laden (für die Link-Seite).
 	 *
 	 * @param string $token Klartext-Token.
