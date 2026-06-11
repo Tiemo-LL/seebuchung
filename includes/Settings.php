@@ -71,6 +71,23 @@ final class Settings {
 	}
 
 	/**
+	 * Kürzel des Landesverbands für UI-Texte (z. B. "LVST", "BTSV").
+	 *
+	 * Fallback-Kette: Kurzname → Verbandsname → generisch "Verband".
+	 */
+	public static function verband_kuerzel(): string {
+		$kurz = trim( (string) self::get( 'verband_kurzname' ) );
+		if ( '' !== $kurz ) {
+			return $kurz;
+		}
+		$name = trim( (string) self::get( 'verbandsname' ) );
+		if ( '' !== $name ) {
+			return $name;
+		}
+		return __( 'Verband', 'seebuchung' );
+	}
+
+	/**
 	 * Einstellungen (teilweise) aktualisieren.
 	 *
 	 * @param array<string, mixed> $werte Zu setzende Schlüssel/Werte; unbekannte Schlüssel werden verworfen.

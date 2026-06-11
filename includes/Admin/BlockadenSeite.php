@@ -118,7 +118,7 @@ final class BlockadenSeite {
 							}
 							?>
 						</td>
-						<td><?php echo esc_html( null === $blockade['verein_id'] ? __( 'Verband', 'seebuchung' ) : ( $vereins_namen[ (int) $blockade['verein_id'] ] ?? (string) $blockade['verein_id'] ) ); ?></td>
+						<td><?php echo esc_html( null === $blockade['verein_id'] ? \Seebuchung\Settings::verband_kuerzel() : ( $vereins_namen[ (int) $blockade['verein_id'] ] ?? (string) $blockade['verein_id'] ) ); ?></td>
 						<td><?php echo esc_html( trim( $blockade['veranstaltung'] . ' — ' . $blockade['verantwortlicher'] . ' ' . $blockade['email'], ' —' ) ); ?></td>
 						<td><?php echo esc_html( (string) $blockade['status'] ); ?></td>
 						<td>

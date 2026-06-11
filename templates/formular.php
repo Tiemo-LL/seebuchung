@@ -84,7 +84,15 @@ $max_taucher = min( $rest, $see->max_pro_buchung );
 		</div>
 		<div class="seebuchung-feldzeile">
 			<label>
-				<?php esc_html_e( 'Vereins-Nr. (leer lassen, wenn kein Verband-Verein)', 'seebuchung' ); ?>
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: %s: Verbandskürzel (z. B. LVST) */
+						__( 'Vereins-Nr. (leer lassen, wenn kein %s-Verein)', 'seebuchung' ),
+						\Seebuchung\Settings::verband_kuerzel()
+					)
+				);
+				?>
 				<input type="text" name="vereins_nummer" inputmode="numeric">
 			</label>
 			<label>
@@ -103,7 +111,15 @@ $max_taucher = min( $rest, $see->max_pro_buchung );
 				<input type="number" name="anzahl_taucher" min="<?php echo esc_attr( (string) $see->min_anmelder ); ?>" max="<?php echo esc_attr( (string) $max_taucher ); ?>" value="<?php echo esc_attr( (string) $see->min_anmelder ); ?>" required inputmode="numeric">
 			</label>
 			<label>
-				<?php esc_html_e( 'davon zahlungspflichtig (ohne Verbands-Verein)', 'seebuchung' ); ?>
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: %s: Verbandskürzel (z. B. LVST) */
+						__( 'davon zahlungspflichtig (ohne %s-Verein)', 'seebuchung' ),
+						\Seebuchung\Settings::verband_kuerzel()
+					)
+				);
+				?>
 				<input type="number" name="anzahl_zahler" min="0" max="<?php echo esc_attr( (string) $max_taucher ); ?>" value="0" required inputmode="numeric">
 			</label>
 		</div>
