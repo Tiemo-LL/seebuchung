@@ -65,9 +65,9 @@ final class Wochenbericht {
 			$html   = $this->html_bericht( $see->name, $heute, $zeilen, $vereins_namen );
 
 			foreach ( $empfaenger as $email ) {
-				$gesendet = wp_mail(
+				$gesendet = Mailer::versenden(
 					$email,
-					sprintf(
+					'[' . Settings::verband_kuerzel() . '] ' . sprintf(
 						/* translators: %s: See-Name */
 						__( 'Wochenbericht %s', 'seebuchung' ),
 						$see->name

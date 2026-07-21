@@ -116,7 +116,7 @@ final class PayPalHandler {
 			exit;
 		}
 
-		$service->bezahlt_markieren( (int) $buchung['id'], $capture['capture_id'] );
+		$service->bezahlt_markieren( (int) $buchung['id'], $capture['capture_id'], $sb_token );
 
 		wp_safe_redirect( add_query_arg( 'sb_ergebnis', 'gueltig', $ziel ) );
 		exit;

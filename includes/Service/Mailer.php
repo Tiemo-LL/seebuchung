@@ -43,19 +43,24 @@ final class Mailer {
 	 * Buchung ist gültig.
 	 *
 	 * @param array<string, mixed> $buchung Buchungszeile.
-	 * @param string               $link    Buchungslink (Storno, später QR).
+	 * @param string               $link    Buchungslink mit Token; leer, wenn der
+	 *                                      Klartext-Token nicht verfügbar ist (Webhook).
 	 */
 	public function gueltig( array $buchung, string $link ): bool {
 		$betreff = __( 'Deine Buchung ist gültig', 'seebuchung' );
-		$text    = sprintf(
-			/* translators: 1: Vorname, 2: Datum, 3: Link */
-			__(
-				"Hallo %1\$s,\n\ndeine Buchung für den %2\$s ist bestätigt und gültig. Details und Storno-Möglichkeit:\n\n%3\$s\n\nGut Luft!",
-				'seebuchung'
-			),
+		$details = '' === $link
+			? __( 'Details, QR-Bestätigung und Storno findest du über den Link aus deiner Bestätigungs-Mail.', 'seebuchung' )
+			: sprintf(
+				/* translators: %s: Link */
+				__( "Details, QR-Bestätigung und Storno-Möglichkeit:\n\n%s", 'seebuchung' ),
+				$link
+			);
+		$text = sprintf(
+			/* translators: 1: Vorname, 2: Datum, 3: Details-Absatz */
+			__( "Hallo %1\$s,\n\ndeine Buchung für den %2\$s ist bestätigt und gültig. %3\$s\n\nGut Luft!", 'seebuchung' ),
 			$buchung['vorname'],
 			$buchung['datum'],
-			$link
+			$details
 		);
 		return $this->senden( $buchung, 'gueltig', $betreff, $text );
 	}
@@ -102,7 +107,40 @@ final class Mailer {
 	}
 
 	/**
-	 * Mail mit Filtern und Verbandsabsender verschicken.
+	 * Mail versenden — mit Verbands-Absendername (nur Anzeigename, die
+	 * Absender-Adresse bleibt unangetastet, sonst drohen SPF-Probleme).
+	 *
+	 * @param string   $an      Empfänger.
+	 * @param string   $betreff Betreff.
+	 * @param string   $text    Inhalt.
+	 * @param string[] $headers Zusätzliche Header.
+	 */
+	public static function versenden( string $an, string $betreff, string $text, array $headers = array() ): bool {
+		$absender = sprintf(
+			/* translators: %s: Verbandskürzel */
+			__( '%s Seebuchung', 'seebuchung' ),
+			Settings::verband_kuerzel()
+		);
+
+		/**
+		 * Absendername der Seebuchung-Mails filtern.
+		 *
+		 * @param string $absender Vorgeschlagener Anzeigename.
+		 */
+		$absender = (string) apply_filters( 'seebuchung_mail_absendername', $absender );
+
+		$name_filter = static function () use ( $absender ): string {
+			return $absender;
+		};
+		add_filter( 'wp_mail_from_name', $name_filter );
+		$erfolg = wp_mail( $an, $betreff, $text, $headers );
+		remove_filter( 'wp_mail_from_name', $name_filter );
+
+		return $erfolg;
+	}
+
+	/**
+	 * Buchungs-Mail mit Filtern und Betreff-Prefix verschicken.
 	 *
 	 * @param array<string, mixed> $buchung Buchungszeile.
 	 * @param string               $typ     Mail-Typ für die Filter.
@@ -110,10 +148,7 @@ final class Mailer {
 	 * @param string               $text    Klartext-Inhalt.
 	 */
 	private function senden( array $buchung, string $typ, string $betreff, string $text ): bool {
-		$verband = (string) Settings::get( 'verbandsname' );
-		if ( '' !== $verband ) {
-			$betreff = '[' . $verband . '] ' . $betreff;
-		}
+		$betreff = '[' . Settings::verband_kuerzel() . '] ' . $betreff;
 
 		/**
 		 * Betreff einer Buchungs-Mail filtern.
@@ -133,6 +168,6 @@ final class Mailer {
 		 */
 		$text = (string) apply_filters( 'seebuchung_mail_text', $text, $typ, $buchung );
 
-		return wp_mail( (string) $buchung['email'], $betreff, $text );
+		return self::versenden( (string) $buchung['email'], $betreff, $text );
 	}
 }

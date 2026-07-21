@@ -133,7 +133,7 @@ final class Blockadenservice {
 				(string) $blockade['datum'],
 				$genehmigt ? __( 'genehmigt — der Termin ist für euch reserviert', 'seebuchung' ) : __( 'leider abgelehnt', 'seebuchung' )
 			);
-			wp_mail( (string) $blockade['email'], $betreff, $text );
+			Mailer::versenden( (string) $blockade['email'], '[' . Settings::verband_kuerzel() . '] ' . $betreff, $text );
 		}
 
 		return $blockade;
@@ -150,9 +150,9 @@ final class Blockadenservice {
 		if ( '' === $an ) {
 			return;
 		}
-		wp_mail(
+		Mailer::versenden(
 			$an,
-			__( 'Neuer Blockade-Antrag', 'seebuchung' ),
+			'[' . Settings::verband_kuerzel() . '] ' . __( 'Neuer Blockade-Antrag', 'seebuchung' ),
 			sprintf(
 				/* translators: 1: Verein, 2: Datum, 3: Admin-URL */
 				__( "Verein %1\$s hat eine Blockade für den %2\$s beantragt.\n\nEntscheiden: %3\$s", 'seebuchung' ),

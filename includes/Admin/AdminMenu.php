@@ -21,12 +21,16 @@ final class AdminMenu {
 		add_action(
 			'admin_menu',
 			static function () {
+				// Wichtig: dieselbe Callback-Instanz für Haupt- und ersten
+				// Untermenüpunkt (gleicher Slug) — sonst rendert WP doppelt.
+				$buchungen = array( new BuchungenSeite(), 'render' );
+
 				add_menu_page(
 					__( 'Seebuchung', 'seebuchung' ),
 					__( 'Seebuchung', 'seebuchung' ),
 					Rollen::CAP_EINSEHEN,
 					'seebuchung',
-					array( new BuchungenSeite(), 'render' ),
+					$buchungen,
 					'dashicons-palmtree',
 					26
 				);
@@ -36,7 +40,7 @@ final class AdminMenu {
 					__( 'Buchungen', 'seebuchung' ),
 					Rollen::CAP_EINSEHEN,
 					'seebuchung',
-					array( new BuchungenSeite(), 'render' )
+					$buchungen
 				);
 				add_submenu_page(
 					'seebuchung',

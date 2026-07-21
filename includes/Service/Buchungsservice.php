@@ -184,11 +184,13 @@ final class Buchungsservice {
 	 *
 	 * Idempotent: ist die Buchung schon gültig, passiert nichts.
 	 *
-	 * @param int    $id          Buchungs-ID.
-	 * @param string $transaktion PayPal-Capture-ID.
+	 * @param int         $id          Buchungs-ID.
+	 * @param string      $transaktion PayPal-Capture-ID.
+	 * @param string|null $token       Klartext-Token (Return-Flow) für den Mail-Link;
+	 *                                 null im Webhook-Fall (nur Hash bekannt).
 	 * @return array<string, mixed>|WP_Error Aktualisierte Buchung oder Fehler.
 	 */
-	public function bezahlt_markieren( int $id, string $transaktion ) {
+	public function bezahlt_markieren( int $id, string $transaktion, ?string $token = null ) {
 		$buchung = $this->buchungen->per_id( $id );
 		if ( null === $buchung ) {
 			return new WP_Error( 'seebuchung_id', __( 'Buchung nicht gefunden.', 'seebuchung' ) );
@@ -205,7 +207,7 @@ final class Buchungsservice {
 		$buchung['status']             = Buchungsstatus::GUELTIG;
 		$buchung['paypal_transaktion'] = $transaktion;
 
-		$this->mailer->gueltig( $buchung, home_url( '/' ) );
+		$this->mailer->gueltig( $buchung, null === $token ? '' : self::buchungslink( $token ) );
 
 		return $buchung;
 	}
