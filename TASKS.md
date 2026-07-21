@@ -27,7 +27,7 @@ Status: ⬜ offen · 🔄 in Arbeit · ✅ fertig — bitte direkt hier pflegen.
 - ✅ Keine-Erstattung-Logik: Storno setzt nur Status (Kontingent frei, Geld bleibt), Hinweistexte in Formular, Storno-Dialog und Mail *(2026-06-11)*
 - ✅ CSV-Export Zahlungen (Schatzmeister) — Button in der Buchungsübersicht *(2026-06-11)*
 - 🔄 QR-Bestätigung: signierter Payload (HMAC, offline prüfbar), QR-SVG auf der Statusseite (ohne gd-Abhängigkeit); Mail **verlinkt** auf die QR-Seite statt einzubetten (Text-Mails). Offen: optionaler PDF-Download (→ Phase 4 Politur) *(2026-06-11)*
-- ⬜ E2E-Test Sandbox: buchen → zahlen → bestätigen → stornieren — **braucht PayPal-Sandbox-Zugangsdaten von Tiemo** (Client-ID/Secret/Webhook-ID in Seebuchung → Einstellungen eintragen); Code-Flow ohne PayPal-Gegenstelle in wp-env verifiziert
+- ✅ E2E-Test Sandbox auf lvst.de/seebuchung-test (2026-07-21, mit Tiemo): buchen (Gast, 2 Zahler, 9 €) → Doppel-Opt-in-Mail → bestätigen → PayPal-Sandbox-Zahlung → automatische Rückleitung → Status „gültig" + QR auf der Statusseite → stornieren → Kontingent wieder frei. Alle Mails kamen an. **Dabei gefunden & gefixt (v0.9.1): Page-Cache fror Buchungsseiten ein** → nocache_headers + DONOTCACHEPAGE
 
 ## Phase 3 · Blockaden-Self-Service + Kontrolle
 
