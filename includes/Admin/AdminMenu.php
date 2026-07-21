@@ -21,6 +21,29 @@ final class AdminMenu {
 		add_action(
 			'admin_menu',
 			static function () {
+				// Reine Kontrolleur:innen sehen ein eigenes schlankes Menü —
+				// das normale Hauptmenü verlangt die Einsehen-Berechtigung.
+				if ( ! current_user_can( Rollen::CAP_EINSEHEN ) && current_user_can( Rollen::CAP_KONTROLLE ) ) {
+					add_menu_page(
+						__( 'Seebuchung', 'seebuchung' ),
+						__( 'Seebuchung', 'seebuchung' ),
+						Rollen::CAP_KONTROLLE,
+						'seebuchung-kontrolle',
+						array( new KontrolleSeite(), 'render' ),
+						'dashicons-palmtree',
+						26
+					);
+					add_submenu_page(
+						'seebuchung-kontrolle',
+						__( 'Hilfe', 'seebuchung' ),
+						__( 'Hilfe', 'seebuchung' ),
+						Rollen::CAP_KONTROLLE,
+						'seebuchung-hilfe',
+						array( new HilfeSeite(), 'render' )
+					);
+					return;
+				}
+
 				// Wichtig: dieselbe Callback-Instanz für Haupt- und ersten
 				// Untermenüpunkt (gleicher Slug) — sonst rendert WP doppelt.
 				$buchungen = array( new BuchungenSeite(), 'render' );
@@ -105,6 +128,14 @@ final class AdminMenu {
 					Rollen::CAP_VERWALTEN,
 					'seebuchung-import',
 					array( new ImportSeite(), 'render' )
+				);
+				add_submenu_page(
+					'seebuchung',
+					__( 'Hilfe', 'seebuchung' ),
+					__( 'Hilfe', 'seebuchung' ),
+					Rollen::CAP_EINSEHEN,
+					'seebuchung-hilfe',
+					array( new HilfeSeite(), 'render' )
 				);
 			}
 		);

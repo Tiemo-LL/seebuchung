@@ -132,9 +132,25 @@ final class Mailer {
 		$name_filter = static function () use ( $absender ): string {
 			return $absender;
 		};
+
+		// Optionale eigene Absenderadresse (z. B. seebuchung@lvst.de) —
+		// sollte zur Website-Domain gehören, sonst drohen SPF-Ablehnungen.
+		$adresse        = sanitize_email( (string) Settings::get( 'mail_absenderadresse' ) );
+		$adresse_filter = static function () use ( $adresse ): string {
+			return $adresse;
+		};
+
 		add_filter( 'wp_mail_from_name', $name_filter );
+		if ( '' !== $adresse ) {
+			add_filter( 'wp_mail_from', $adresse_filter );
+		}
+
 		$erfolg = wp_mail( $an, $betreff, $text, $headers );
+
 		remove_filter( 'wp_mail_from_name', $name_filter );
+		if ( '' !== $adresse ) {
+			remove_filter( 'wp_mail_from', $adresse_filter );
+		}
 
 		return $erfolg;
 	}

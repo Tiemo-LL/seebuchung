@@ -49,6 +49,9 @@ final class EinstellungenSeite {
 						<td><input id="sb-kurz" class="regular-text" name="verband_kurzname" value="<?php echo esc_attr( (string) $werte['verband_kurzname'] ); ?>"></td></tr>
 					<tr><th><label for="sb-mail"><?php esc_html_e( 'Kontakt-E-Mail', 'seebuchung' ); ?></label></th>
 						<td><input id="sb-mail" type="email" class="regular-text" name="kontakt_email" value="<?php echo esc_attr( (string) $werte['kontakt_email'] ); ?>"></td></tr>
+					<tr><th><label for="sb-absender"><?php esc_html_e( 'Mail-Absenderadresse', 'seebuchung' ); ?></label></th>
+						<td><input id="sb-absender" type="email" class="regular-text" name="mail_absenderadresse" value="<?php echo esc_attr( (string) $werte['mail_absenderadresse'] ); ?>" placeholder="seebuchung@lvst.de">
+						<p class="description"><?php esc_html_e( 'Leer = WordPress-Standard (wordpress@…). Die Adresse sollte zur Domain der Website gehören, sonst landen Mails im Spam (SPF/DMARC).', 'seebuchung' ); ?></p></td></tr>
 				</table>
 
 				<h2><?php esc_html_e( 'Buchung', 'seebuchung' ); ?></h2>
@@ -119,6 +122,7 @@ final class EinstellungenSeite {
 				'verbandsname'               => $text( 'verbandsname' ),
 				'verband_kurzname'           => $text( 'verband_kurzname' ),
 				'kontakt_email'              => sanitize_email( $text( 'kontakt_email' ) ),
+				'mail_absenderadresse'       => sanitize_email( $text( 'mail_absenderadresse' ) ),
 				'buchungsseite_id'           => (int) $text( 'buchungsseite_id' ),
 				'bestaetigungsfrist_stunden' => max( 1, (int) $text( 'bestaetigungsfrist_stunden' ) ),
 				'anonymisierung_tage'        => max( 1, (int) $text( 'anonymisierung_tage' ) ),

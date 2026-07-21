@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Seebuchung
  * Description:       Buchung von Tageskontingenten an verwalteten Tauchseen — Doppel-Opt-in, PayPal-Zahlung, QR-Bestätigung und Blockaden-Self-Service für Landesverbände.
- * Version:           0.9.2
+ * Version:           0.9.3
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Author:            Landesverband Sporttauchen Rheinland-Pfalz e.V.
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SEEBUCHUNG_VERSION', '0.9.2' );
+define( 'SEEBUCHUNG_VERSION', '0.9.3' );
 define( 'SEEBUCHUNG_PLUGIN_FILE', __FILE__ );
 define( 'SEEBUCHUNG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SEEBUCHUNG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

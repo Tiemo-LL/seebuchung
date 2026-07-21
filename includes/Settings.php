@@ -32,6 +32,7 @@ final class Settings {
 			'verbandsname'               => '',
 			'verband_kurzname'           => '',
 			'kontakt_email'              => '',
+			'mail_absenderadresse'       => '',
 			'logo_attachment_id'         => 0,
 			'buchungsseite_id'           => 0,
 			'bestaetigungsfrist_stunden' => 48,
