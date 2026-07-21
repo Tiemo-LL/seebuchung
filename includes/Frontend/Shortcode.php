@@ -29,6 +29,7 @@ final class Shortcode {
 	 */
 	public static function registrieren(): void {
 		add_shortcode( 'seebuchung', array( new self(), 'render' ) );
+		add_action( 'template_redirect', array( self::class, 'cache_verhindern' ) );
 		add_action(
 			'wp_enqueue_scripts',
 			static function () {
@@ -40,6 +41,31 @@ final class Shortcode {
 				);
 			}
 		);
+	}
+
+	/**
+	 * Buchungsseiten vom Page-Cache ausnehmen.
+	 *
+	 * Restplätze und Nonces müssen live sein — gecachte Seiten zeigen
+	 * veraltete Kontingente und liefern irgendwann abgelaufene Nonces.
+	 * DONOTCACHEPAGE respektieren alle gängigen Cache-Plugins.
+	 */
+	public static function cache_verhindern(): void {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Nur Erkennung der Buchungsseite.
+		$hat_parameter = isset( $_GET['sb_see'] ) || isset( $_GET['sb_token'] ) || isset( $_GET['sb_verein'] )
+			|| isset( $_GET['sb_datum'] ) || isset( $_GET['sb_ergebnis'] ) || isset( $_GET['sb_monat'] );
+		// phpcs:enable
+
+		$post = get_post();
+		if ( ! $hat_parameter && ( null === $post || ! has_shortcode( (string) $post->post_content, 'seebuchung' ) ) ) {
+			return;
+		}
+
+		nocache_headers();
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- Standardisierte Konstante, die Cache-Plugins auswerten.
+			define( 'DONOTCACHEPAGE', true );
+		}
 	}
 
 	/**
